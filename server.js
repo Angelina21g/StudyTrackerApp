@@ -15,6 +15,7 @@ const app = express();
 // This allows the app to read JSON data sent in the request body
 app.use(express.json());
 
+// ROUTES
 // Route to handle user registration and login
 app.use('/auth', authRoutes);
 
@@ -27,9 +28,10 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('DB connection error:', err));
 
-// START THE SERVER
-// Use port 3000 or any port specified in the .env file
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+// EXPORT THE SERVER
+const handler = (req, res) => {
+  app(req, res);
+};
+
+export default handler;
+
