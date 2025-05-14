@@ -1,4 +1,5 @@
-// Import mongoose to define a schema and interact with MongoDB
+
+
 import mongoose from 'mongoose';
 
 // Define the structure of a "user" in the database
@@ -10,17 +11,23 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
 
+  // The user's email address (must be unique and required)
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+
   // The user's password (required)
   // This will be hashed before being saved to the database
   password: {
     type: String,
     required: true
   }
+}, {
+  // Automatically add createdAt and updatedAt timestamps
+  timestamps: true
 });
 
-// Create a model from the schema
-// "User" is the name of the collection in MongoDB
-const User = mongoose.model('User', userSchema);
-
 // Export the model so we can use it in routes and controllers
-export default User;
+export default mongoose.model('User', userSchema);

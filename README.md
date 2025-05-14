@@ -1,29 +1,56 @@
 # StudyTracker
 
 # Project Overview
-StudyTracker is a simple backend app built for my Web Engineering class. The goal is to help students (like me) stay organized with their study tasks. It allows users to create an account, log in, and manage tasks like homework or study goals. Each task can include a due date, tags (like "math" or "reading"), and a priority level.
+StudyTracker is a simple full-stack study management app built for my Web Engineering class. It helps students stay organized by letting them create an account, log in, and manage tasks like homework or study goals. Each task includes a title, subject, due date, scheduled start/end times, and a priority level.
 
-This project is focused on building the backend. It uses Node.js, Express, MongoDB, and JWT for authentication.
+This project uses Node.js, Express, MongoDB (via Mongoose), JWT for auth on the backend, and plain HTML/CSS/vanilla JS on the frontend.
+
 
 # What’s Working Right Now
 
-MongoDB connected using Mongoose
+**User Authentication**
 
-User can register and log in (with password hashing and JWT)
+Register & log in with bcrypt-hashed passwords
 
-Auth middleware protects routes so only logged-in users can manage tasks
+Receive a JWT and store it in localStorage
 
-Full CRUD for tasks (create, read, update, delete)
+**Protected Routes**
 
-Tasks support tags, priorities, and due dates
+All task APIs require a valid Bearer token
 
-Routes include filtering, sorting, and ownership checks
+**Task Management (CRUD)**
 
-Helpful error and success messages
+Create new tasks with title, subject, due date, start/end times, priority
 
-.env file for sensitive info
+Read fetch your tasks and display them as cards
 
-nodemon setup for development
+Update pre-fill the form for editing and save changes
+
+Delete remove a task with confirmation
+
+**Frontend**
+
+Responsive dashboard (form + cards)
+
+Inline form messages (success / error)
+
+Native confirm() for delete
+
+**Backend**
+
+MVC structure: models/, controllers/, routes/, middleware/, config/db.js
+
+Express-validator for input checks
+
+Centralized error handling & logging (morgan)
+
+**Development**
+
+nodemon for hot reload
+
+Environment variables with .env
+
+Ready for Vercel deploy (vercel.json)
 
 # Routes
 
@@ -33,7 +60,7 @@ POST /auth/register — Register a new user
 POST /auth/login — Log in and get a JWT token
 
 **Tasks (JWT required)**
-GET /tasks — Get user’s tasks (can filter by priority, completion, etc.)
+GET /tasks — Get all your task
 
 POST /tasks — Create a new task
 
@@ -57,22 +84,15 @@ PORT=3000
 # Start the app in dev mode:
 npm run dev
 
+# Open in your browser:
+
+Auth page → http://localhost:3000/index.html
+
+Dashboard → redirects to http://localhost:3000/task.html after login
+
 # Current Limitations
-No frontend yet — all testing is done through Postman
+No batch filtering or sorting controls on the frontend
 
-You must include a token in the Authorization header to use the task routes
+Uses native confirm() for delete rather than a custom modal
 
-# Next Steps for Final Project 
-Add a status field to tasks (e.g., "pending", "in progress", "completed")
-
-Add backend logic to flag/filter tasks that are overdue (based on current date)
-
-Create a new route like /dashboard that returns basic task stats (total, completed, overdue)
-
-Add batch task completion (e.g., update multiple task IDs at once)
-
-Add a route for updating user info (like password or username)
-
-# Frontend Plans (For Later)
-Eventually, I’d like to add a simple HTML interface so users can manage tasks without Postman.
-
+No automated tests (unit/integration) 
