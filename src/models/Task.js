@@ -18,14 +18,8 @@ const taskSchema = new mongoose.Schema({
   // Optional scheduled end time for the study session
   endTime:   { type: Date,   default: null },
 
-  // Has the user marked this task complete?
-  completed: { type: Boolean, default: false },
-
   // The owner of this task; links to the User who created it
-  userId:    { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-
-  // Tags/categories for the task (e.g., ["math", "reading"])
-  tags:      { type: [String], default: [] },
+  user:    { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 
   // Priority level to help sort tasks
   priority:  {

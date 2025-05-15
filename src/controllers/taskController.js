@@ -1,5 +1,3 @@
-
-
 import dotenv from 'dotenv';          // load environment variables
 import Task from '../models/Task.js'; // Task data model
 
@@ -9,7 +7,10 @@ dotenv.config();
 // Return all tasks belonging to the logged-in user
 export const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ userId: req.user.userId }).sort({ createdAt: -1 });
+    const tasks = await Task
+      .find({ user: req.user.userId })
+      .sort({ createdAt: -1 });
+
     res.json({ success: true, data: tasks });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to fetch tasks' });
@@ -36,7 +37,7 @@ export const createTask = async (req, res) => {
       startTime,
       endTime,
       priority,
-      userId: req.user.userId
+      user: req.user.userId      
     });
 
     await task.save();
@@ -62,9 +63,12 @@ export const updateTask = async (req, res) => {
     const updates = { title, subject, dueDate, startTime, endTime, priority };
 
     const task = await Task.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user.userId },
+      { _id: req.params.id, user: req.user.userId }, 
       updates,
-      { new: true } // return the updated task
+      {
+        new: true,          // return the updated task
+        runValidators: true 
+      }
     );
 
     if (!task) {
@@ -83,7 +87,7 @@ export const deleteTask = async (req, res) => {
   try {
     const task = await Task.findOneAndDelete({
       _id: req.params.id,
-      userId: req.user.userId
+      user: req.user.userId   
     });
 
     if (!task) {
